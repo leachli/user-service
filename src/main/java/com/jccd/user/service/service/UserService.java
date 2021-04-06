@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService {
@@ -125,7 +126,7 @@ public class UserService {
         User saveUser = userRepository.save(user);
         if (saveUser.getId() != null) {
             String redisKey = String.format(USER_CACHE, saveUser.getId());
-            redisUtil.set(redisKey, JsonUtil.toJson(saveUser));
+            redisUtil.setEx(redisKey, JsonUtil.toJson(saveUser), 1,TimeUnit.MINUTES);
             return ResultResponse.ok(true);
         }
         return ResultResponse.fail(ResultEnum.SAVE_DATA_EXCEPTION);
@@ -157,7 +158,7 @@ public class UserService {
             }
             User saveUser = userRepository.save(user);
             String redisKey = String.format(USER_CACHE, user.getId());
-            redisUtil.set(redisKey, JsonUtil.toJson(saveUser));
+            redisUtil.setEx(redisKey, JsonUtil.toJson(saveUser),1,TimeUnit.MINUTES);
             return ResultResponse.ok(true);
         }else {
             return ResultResponse.fail(ResultEnum.USER_ID_NOT_NULL);
@@ -172,7 +173,7 @@ public class UserService {
             String redisKey = String.format(USER_CACHE, id);
             user.setDel(StringStatus.INVALID.getStatus());
             User saveUser = userRepository.save(user);
-            redisUtil.set(redisKey, JsonUtil.toJson(saveUser));
+            redisUtil.setEx(redisKey, JsonUtil.toJson(saveUser),1,TimeUnit.MINUTES);
             return ResultResponse.ok(true);
         }
         return ResultResponse.fail(ResultEnum.ACCOUNT_NOT_EXIST);
