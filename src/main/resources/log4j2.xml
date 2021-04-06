@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" shutdownHook="disable">
+    <Properties>
+        <Property name="log-path">./log/user-service</Property>
+        <Property name="log-name">user</Property>
+        <Property name="archive-path">${log-path}</Property>
+        <Property name="logArchiveSize">256 MB</Property>
+        <Property name="maxRolloverNumber">100</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <RollingFile name="default-RollingFile-Appender" fileName="${log-path}/${log-name}.log"
+                     filePattern="${archive-path}/${log-name}_%d{yyyyMMdd}-%i.log.gz" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${logArchiveSize}" />
+            </Policies>
+            <DefaultRolloverStrategy max="${maxRolloverNumber}" />
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console-Appender" />
+            <AppenderRef ref="default-RollingFile-Appender"/>
+        </Root>
+    </Loggers>
+</Configuration>

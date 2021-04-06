@@ -1,0 +1,46 @@
+plugins {
+    id 'war'
+    id "org.springframework.boot" version "2.3.5.RELEASE"
+    id "io.spring.dependency-management" version "1.0.10.RELEASE"
+}
+
+
+group 'com.jccd.user'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    implementation "org.springframework.boot:spring-boot-starter-log4j2"
+
+    implementation ('org.springframework.boot:spring-boot-starter-data-jpa') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    testImplementation ("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    implementation ("org.springframework.boot:spring-boot-starter-data-redis")  {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    implementation ("org.springframework.integration:spring-integration-redis") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    implementation "io.springfox:springfox-swagger2:${swagger2_version}"
+    implementation "io.springfox:springfox-swagger-ui:${swagger2_version}"
+    implementation "org.apache.commons:commons-lang3:${commons_lang3_version}"
+    implementation "mysql:mysql-connector-java:8.0.16"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
